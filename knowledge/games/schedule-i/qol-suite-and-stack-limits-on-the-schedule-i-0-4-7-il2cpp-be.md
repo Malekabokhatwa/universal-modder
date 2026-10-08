@@ -3,7 +3,7 @@ kind: game
 title: QoL suite and stack limits on the Schedule I 0.4.7 IL2CPP beta with MelonLoader
 game: Schedule I
 games_also: []
-game_version: "0.4.7f9 IL2CPP (Steam 3164500, beta branch, buildid 25698382); also read the Mono alternate-beta 0.4.7f6"
+game_version: "0.4.7f9 to f12 IL2CPP (Steam 3164500, beta branch, buildids 25698382 to 25796331); also read the Mono alternate-beta 0.4.7f6"
 platform: proton
 engine: unity-il2cpp
 route: managed-patch
@@ -19,7 +19,7 @@ agents:
 - Claude Code (Opus 5.5)
 humans:
 - Malekabokhatwa
-date: '2026-10-05'
+date: '2026-10-09'
 links:
 - https://github.com/Malekabokhatwa/PocketPlug
 - https://github.com/Malekabokhatwa/IncreasedStackLimit-Latest
@@ -130,6 +130,13 @@ Harmony patches plus direct field writes through the Il2CppInterop assemblies. N
 11. **The lab was Mono, but an old mod in it was an IL2CPP build** (it referenced `Il2CppInterop` and `Il2CppScheduleOne.*`). Backend-mismatched mods fail at load, so check the references before trusting an installed mod.
 
 12. **Regular ~200 ms freezes every 2 s.** Cause: polling with `Object.FindObjectsOfType<T>()` for seven station/pot types. In this IL2CPP scene each pass cost about 190 ms. Fix: walk `Property.OwnedProperties[i].BuildableItems` instead, cache each item's `TryCast` type once, and check 12 items per frame. Found with a dev perf probe that logs frames over 150 ms and features over 2 ms. After the fix: 0 hitches after load.
+
+13. **Station "done" alerts never fire for mixing (Mk1 and Mk2) and chemistry stations.** Cause: when a known recipe finishes, `MixingStation.TryCreateOutputItems` adds the product to `OutputSlot` and calls `SetMixOperation(null)` in the same tick; `ChemistryStation.FinalizeOperation` does the same. A poll for "operation present and done" never sees it. Fix: treat a rise in the output slot as done. Only a new-recipe mix keeps its operation, until the player reveals it.
+14. **Raising mixing station batch size.** Use `MixingStation.MaxMixQuantity` (code default 10; Mk2's prefab sets 20). Mix time is `MixTimePerItem x quantity`, so the time scales on its own (Mk2: 3 min/item). Clamp the batch to the output product's stack limit, because the whole batch is added to `OutputSlot` at once. The start-threshold slider (`stationConfiguration.StartThrehold`, with the game's typo) is sized in `InitializeGridItem`; call `Configure(1, max, true)` after a change.
+15. **A Messages contact with no NPC.** 0.4.7's `MessageContactInfo(name, id, icon, hideable, showRelationship)` plus `new MSGConversation(contact, id)` gives a working conversation. `SendMessage` calls `EnsureUIExists`, and `EntryClicked()` opens it. The game only saves NPC conversations, so keep your own copy of the messages and re-add them after load with `notify: false, network: false`.
+16. **"New day" logic ran on every load.** Cause: `TimeManager.ElapsedDays` reads 0 until the save's time is applied partway through loading. Fix: wait for `LoadManager.IsGameLoaded && !IsLoading` plus a few seconds, and only act on a change of exactly +1 day.
+17. **Employees take wages from cash in their locker** (`EmployeeHome.Storage`, `Employee.RemoveDailyWage`). To pay from the bank, add to an existing `CashInstance` (`ChangeBalance` + `ItemSlot.ReplicateStoredInstance`, the reverse of `EmployeeHome.RemoveCash`), or `InsertItem(MoneyManager.GetCashInstance(x))`. Why employees can't work arrives via `Employee.SubmitNoWorkReason(reason, fix)`, called repeatedly while idle. The packager's real reason is only in `fix`.
+18. **The beta auto-updates under you** (f9 to f11 to f12 in five days). MelonLoader regenerates the interop assemblies on the next launch, and a mod built against f9 kept working. f11 and f12 add an end-of-load stall about 11 to 13 s after the scene loads, with no GC on either runtime. It ranged from nothing to over 1 s and was also seen with no mods.
 
 ## Assets
 - **Icons:** [Lucide](https://lucide.dev) SVGs (ISC), rendered with `rsvg-convert` and composited on gradient squares with Pillow (`scripts/make-icons.py` in the PocketPlug repo).
