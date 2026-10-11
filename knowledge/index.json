@@ -3491,7 +3491,7 @@
   "title": "QoL suite and stack limits on the Schedule I 0.4.7 IL2CPP beta with MelonLoader",
   "game": "Schedule I",
   "games_also": [],
-  "game_version": "0.4.7f9 IL2CPP (Steam 3164500, beta branch, buildid 25698382); also read the Mono alternate-beta 0.4.7f6",
+  "game_version": "0.4.7f9 IL2CPP (Steam 3164500, beta branch, buildid 25698382); gotchas 13-15 verified on 0.4.7f12; also read the Mono alternate-beta 0.4.7f6",
   "platform": "proton",
   "engine": "unity-il2cpp",
   "route": "managed-patch",
@@ -3510,7 +3510,7 @@
   "humans": [
    "Malekabokhatwa"
   ],
-  "date": "2026-10-05",
+  "date": "2026-10-10",
   "links": [
    "https://github.com/Malekabokhatwa/PocketPlug",
    "https://github.com/Malekabokhatwa/IncreasedStackLimit-Latest"
