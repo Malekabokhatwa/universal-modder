@@ -3917,7 +3917,7 @@
   "title": "QoL suite and stack limits on the Schedule I 0.4.7 IL2CPP beta with MelonLoader",
   "game": "Schedule I",
   "games_also": [],
-  "game_version": "0.4.7f9 IL2CPP (Steam 3164500, beta branch, buildid 25698382); gotchas 13-15 verified on 0.4.7f12; also read the Mono alternate-beta 0.4.7f6",
+  "game_version": "0.4.7f9 IL2CPP (Steam 3164500, beta branch, buildid 25698382); gotchas 13-21 verified on 0.4.7f12 (16-21 with PocketPlug 3.0.0 and 3.1.0); also read the Mono alternate-beta 0.4.7f6",
   "platform": "proton",
   "engine": "unity-il2cpp",
   "route": "managed-patch",
@@ -3928,7 +3928,7 @@
    "umu-run + GE-Proton11-6",
    "rsvg-convert + Pillow (icons)"
   ],
-  "anti_cheat": "none found; co-op is FishNet over Steam P2P. Built and tested single-player only",
+  "anti_cheat": "none found; co-op is FishNet over Steam P2P. Built and tested single-player only; not for use in other people's lobbies",
   "status": "working",
   "agents": [
    "Claude Code (Opus 5.5)"
@@ -3936,7 +3936,7 @@
   "humans": [
    "Malekabokhatwa"
   ],
-  "date": "2026-10-10",
+  "date": "2026-10-11",
   "links": [
    "https://github.com/Malekabokhatwa/PocketPlug",
    "https://github.com/Malekabokhatwa/IncreasedStackLimit-Latest"
